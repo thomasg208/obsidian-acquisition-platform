@@ -129,6 +129,11 @@
             <div class="section-header">
                 <h2 class="section-title">MVIP Acquisition Lifecycle</h2>
                 <p class="section-subtitle">A clear path from discovery to scale for enterprise buyers.</p>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button id="view-infographics-btn" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; border: none; cursor: pointer;">
+                        <i data-lucide="image" style="width: 18px; height: 18px;"></i> View Strategic Infographics
+                    </button>
+                </div>
             </div>
             <div class="timeline">
                 <!-- Timeline Items -->
@@ -320,6 +325,27 @@
             <p>Lead Architect: Thomas Gaye</p>
         </div>
     </footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox-modal" class="lightbox-overlay hidden">
+        <div class="lightbox-content">
+            <button id="lightbox-close" class="lightbox-btn close-btn">
+                <i data-lucide="x"></i>
+            </button>
+            <button id="lightbox-prev" class="lightbox-btn nav-btn prev-btn">
+                <i data-lucide="chevron-left"></i>
+            </button>
+            <div class="lightbox-image-container">
+                <img id="lightbox-image" src="" alt="MVIP Strategic Infographic">
+            </div>
+            <button id="lightbox-next" class="lightbox-btn nav-btn next-btn">
+                <i data-lucide="chevron-right"></i>
+            </button>
+            <div class="lightbox-counter">
+                <span id="lightbox-current-index">1</span> / 2
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
     <script>

@@ -176,4 +176,68 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4)';
         }
     });
+
+    // 4. Lightbox Logic
+    const lightboxModal = document.getElementById('lightbox-modal');
+    const lightboxImg = document.getElementById('lightbox-image');
+    const openBtn = document.getElementById('view-infographics-btn');
+    const closeBtn = document.getElementById('lightbox-close');
+    const prevBtn = document.getElementById('lightbox-prev');
+    const nextBtn = document.getElementById('lightbox-next');
+    const currentIndexSpan = document.getElementById('lightbox-current-index');
+
+    const images = ['infographic-1.png', 'infographic-2.png'];
+    let currentLightboxIndex = 0;
+
+    function updateLightbox() {
+        if (!lightboxImg) return;
+        lightboxImg.src = images[currentLightboxIndex];
+        if (currentIndexSpan) currentIndexSpan.textContent = currentLightboxIndex + 1;
+    }
+
+    function openLightbox() {
+        if (!lightboxModal) return;
+        currentLightboxIndex = 0;
+        updateLightbox();
+        lightboxModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+
+    function closeLightbox() {
+        if (!lightboxModal) return;
+        lightboxModal.classList.add('hidden');
+        document.body.style.overflow = ''; // Restore scrolling
+    }
+
+    function nextSlide() {
+        currentLightboxIndex = (currentLightboxIndex + 1) % images.length;
+        updateLightbox();
+    }
+
+    function prevSlide() {
+        currentLightboxIndex = (currentLightboxIndex - 1 + images.length) % images.length;
+        updateLightbox();
+    }
+
+    if (openBtn) openBtn.addEventListener('click', openLightbox);
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+
+    // Close on click outside
+    if (lightboxModal) {
+        lightboxModal.addEventListener('click', (e) => {
+            if (e.target === lightboxModal || e.target.classList.contains('lightbox-content') || e.target.classList.contains('lightbox-image-container')) {
+                closeLightbox();
+            }
+        });
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (!lightboxModal || lightboxModal.classList.contains('hidden')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+    });
 });
