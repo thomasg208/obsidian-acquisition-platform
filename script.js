@@ -240,4 +240,87 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'ArrowRight') nextSlide();
         if (e.key === 'ArrowLeft') prevSlide();
     });
+
+    // 5. Podcast Share Actions
+    const shareLinkedin = document.getElementById('share-linkedin');
+    const shareTwitter = document.getElementById('share-twitter');
+    const shareCopy = document.getElementById('share-copy');
+    
+    // Compute exact share URL pointing directly to the podcast section
+    const getShareUrl = () => {
+        return window.location.origin + window.location.pathname + '#podcast';
+    };
+
+    if (shareLinkedin) {
+        shareLinkedin.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = encodeURIComponent(getShareUrl());
+            const title = encodeURIComponent("Listen to the Founder's Briefing on OBSIDIAN— luxury ambient biometric identity platform.");
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'width=600,height=600');
+        });
+    }
+
+    if (shareTwitter) {
+        shareTwitter.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = encodeURIComponent(getShareUrl());
+            const text = encodeURIComponent("Listen to the Founder's Briefing on OBSIDIAN—the next-generation luxury ambient security intelligence platform.");
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank', 'width=600,height=400');
+        });
+    }
+
+    if (shareCopy) {
+        shareCopy.addEventListener('click', () => {
+            const url = getShareUrl();
+            navigator.clipboard.writeText(url).then(() => {
+                // Trigger Toast HUD Notification
+                showToast("LINK COPIED", "Secure briefing URL is copied to clipboard.");
+                
+                // Temporary tooltip visual feed
+                const tooltip = document.getElementById('copy-tooltip');
+                if (tooltip) {
+                    tooltip.textContent = "Copied!";
+                    setTimeout(() => {
+                        tooltip.textContent = "Copy Link";
+                    }, 2000);
+                }
+            }).catch(err => {
+                console.error("Clipboard copy failed", err);
+            });
+        });
+    }
+
+    // Helper to generate a gorgeous HUD Toast dynamic alert
+    function showToast(title, message) {
+        let toast = document.getElementById('toast-hud-alert');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast-hud-alert';
+            toast.className = 'hud-toast';
+            toast.innerHTML = `
+                <div class="hud-toast-icon"><i data-lucide="shield-check"></i></div>
+                <div class="hud-toast-text">
+                    <h4 id="toast-title"></h4>
+                    <p id="toast-message"></p>
+                </div>
+            `;
+            document.body.appendChild(toast);
+        }
+        
+        document.getElementById('toast-title').textContent = title;
+        document.getElementById('toast-message').textContent = message;
+        
+        // Render lucide icon in toast
+        lucide.createIcons();
+        
+        // Slide in
+        setTimeout(() => {
+            toast.classList.add('active');
+        }, 100);
+        
+        // Slide out
+        setTimeout(() => {
+            toast.classList.remove('active');
+        }, 3500);
+    }
 });
